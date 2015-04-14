@@ -3,7 +3,7 @@
 If you are not using anguar-meteor then look at grigio:babel instead. This package is only to be used with angular-meteor.
 
 ## Why pbastowski:angular-babel?
-This package is a direct copy of the grigio:babel package with the only change being the addition of ng-annotate, which runs immediately after babel finishes transpiling each of your .es6 files. Please give your files the .es6 extension, not .ng.js, as .ng.js files are already catered for by the angular-meteor package itself.
+This package is a direct copy of the grigio:babel package with the only change being the addition of ng-annotate, which runs immediately after babel finishes transpiling each of your .es6 files. Please give your files the .es6 extension, not .ng.js, as .ng.js files are already annotated by the angular-meteor package itself.
 
 The reason I created this package is because Meteor currently only allows us to associate one plugin per file extension. Thus, either Babel or ng-annotate can pre-process your .es6 files, but not both. So, if using the grigio:babel package, you can have your ES6 files converted to ES5 files with an .es6.js extension. But, they would not be annotated with ng-annotate, which kinda sucks.
 
