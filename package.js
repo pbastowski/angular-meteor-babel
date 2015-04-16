@@ -13,7 +13,7 @@ Package.registerBuildPlugin({
         'plugin/compile-6to5.js'
     ],
     npmDependencies: {
-        'babel-core':   '5.0.2',
+        'babel-core':  '5.1.10',
         'ng-annotate': '0.15.4'
     }
 });
@@ -27,7 +27,7 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function (api) {
-    api.use(['pbastowski:ng-babel', 'tinytest']);
+    api.use(['pbastowski:angular-babel', 'tinytest']);
     api.addFiles([
         'tests/basic_test.es6.js'
     ], ['client', 'server']);
