@@ -48,9 +48,6 @@ var handler = function (compileStep, isLiterate) {
     throw new Error(ret.errors.join(': '));
   }
 
-  //console.log("###### Babel: ", compileStep.inputPath);
-
-
   compileStep.addJavaScript({
     path: outputFile,
     sourcePath: compileStep.inputPath,
