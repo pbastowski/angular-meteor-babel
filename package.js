@@ -13,7 +13,7 @@ Package.registerBuildPlugin({
         'plugin/compile-6to5.js'
     ],
     npmDependencies: {
-        'babel-core':  '5.1.10',
+        'babel-core':  '5.2.6',
         'ng-annotate': '0.15.4'
     }
 });
