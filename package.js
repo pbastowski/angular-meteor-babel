@@ -26,7 +26,7 @@ Package.onUse(function (api) {
     api.addFiles('lib/runtime.js');
 
     // watch for changes in the config file and rebuild
-    api.add_files(['../../babel.json'], 'client');
+    api.add_files(['../../babel.json']);
 });
 
 Package.onTest(function (api) {
