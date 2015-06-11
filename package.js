@@ -24,6 +24,9 @@ Package.onUse(function (api) {
     api.addFiles('lib/core-js-no-number.js');
     // runtime
     api.addFiles('lib/runtime.js');
+
+    // watch for changes in the config file and rebuild
+    api.add_files(['../../babel.json'], 'server');
 });
 
 Package.onTest(function (api) {
