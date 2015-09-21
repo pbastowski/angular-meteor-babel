@@ -1,7 +1,7 @@
 Package.describe({
     name:    'pbastowski:angular-babel',
     summary: 'Write javascript ES6 in your Angular-Meteor app',
-    version: '0.1.9',
+    version: '0.1.9.1',
     git:     'https://github.com/pbastowski/angular-meteor-babel.git'
 });
 
