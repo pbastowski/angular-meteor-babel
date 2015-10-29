@@ -1,64 +1,57 @@
-# Angular Meteor Babel
+# Babel and ng-annotate in one package
 
-If you are not using anguar-meteor then look at grigio:babel instead. This package is only to be used with angular-meteor.
+This package is meant to be used with [Angular-Meteor](http://angular-meteor.com) and the corresponding `angular` package. If you are not wotking with angular-meteor then consider using Meteor's own `ecmascript` package.
 
-## Why pbastowski:angular-babel?
-This package is a direct copy of the grigio:babel package with the only change being the addition of ng-annotate, which runs immediately after babel finishes transpiling each of your .es6 files. Please give your files the .es6 extension, not .ng.js, as .ng.js files are already being annotated by the angular-meteor package itself.
+## Install
 
-The reason I created this package is because Meteor currently only allows us to associate one plugin per file extension. Thus, either Babel or ng-annotate can pre-process your .es6 files, but not both. So, if using the grigio:babel package, you can have your ES6 files converted to ES5 files with an .es6.js extension. But, they would not be annotated with ng-annotate, which kinda sucks.
-
-## Introduction
-
-Write javascript ES6 (http://git.io/es6features) in your Angular Meteor app. A port of the [Babel](https://babeljs.io) transpiler (previosly known as 6to5).
-
-It also includes the `runtime` and `core-js` (without ES6 Number) in `lib/` to support features like function generators, sets,..
- 
-## Installation
- 
-```
+```shell
 meteor add pbastowski:angular-babel
 ```
 
-## Configuration (optional)
+## What's in this package that's not in the ecmascript package?
 
-You can override the default config, just create a `babel.json` file in your project and override the default behavior. Then restart `meteor` to apply.
+Here is the list of Babel transformers in this package that are not in the `ecmascript` package:
 
-```
-{
-  "debug": false,                         // print loaded config
-  "verbose": true,                        // print active file extensions
-  "extensions": ['es6.js', 'es6', 'jsx'], // babel managed extensions
-  "stage": 0,                             // experimental ES7 support
-  "modules", "common"                     // could also be "system", etc
-}
+- es5.properties.mutators 
+- es6.modules 
+- es6.regex.sticky
+- es6.regex.unicode 
+- es6.tailCall
+- es6.templateLiterals 
+- es7.decorators (stage 1)
+- es7.classProperties (stage 0)
+- es7.exportExtensions (stage 1)
+- es7.comprehensions (stage 0)
+- es7.asyncFunctions (stage 2)
+- es7.doExpressions (stage 0)
+- es7.exponentiationOperator (stage 3)
 
-```
-*NOTE*: If you use `reactjs:react` you must create `babel.json` and remove `jsx` from your `extensions`, to avoid `JSX` compilation conflict.
+Please note that all es7 transformers are considered experimental, especially those at Stage 0 and 1. 
 
-```
-{
-...
-  "extensions": ['es6.js', 'es6'], // .jsx is compiled via react-tools in this case
-...
-}
-```
 
-## Known issues
+## `import ... from` and `require`
 
-Some ES6 ES7 features aren't available
+Babel does not include a `require` loader, it just compiles statements such as shown below
 
-- import / export [#9](https://github.com/grigio/meteor-babel/issues/9)
-- Number [#5](https://github.com/grigio/meteor-babel/issues/5)
-
-## Tests
-
-Inside this package:
-
-```
-meteor test-packages ./ # or spacejam test-packages ./
+```javascript
+import {x, y, z} from "modulename";
 ```
 
+into something like this 
 
-### License
+```javascript
+var x = require('modulename')['x'];
+var y = require('modulename')['y'];
+var z = require('modulename')['z'];
+```
 
-Copyright (C) 2014 Luigi Maselli - http://grigio.org - MIT Licence
+So, if you actually use the `import ... from` syntax in your code then you may see errors in your dev console. To get around that, I have created a simple `require` package, which implements just enough of `require` and `module.exports` to enable you to export and import in Meteor apps. 
+ 
+Try it and see if it works for you:
+ 
+    meteor add pbastowski:require
+     
+## More info please...
+
+See the [Babel website](http://babeljs.io/)
+
