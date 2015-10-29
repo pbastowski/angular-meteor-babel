@@ -1,37 +1,44 @@
 Package.describe({
-    name:    'pbastowski:angular-babel',
-    summary: 'Write javascript ES6 in your Angular-Meteor app',
-    version: '0.1.10',
-    git:     'https://github.com/pbastowski/angular-meteor-babel.git'
+    name:    "pbastowski:angular-babel",
+    summary: "Babel compiler and ng-annotate for Meteor 1.2",
+    version: "1.0.0",
+    git:     "https://github.com/pbastowski/angular-meteor-babel.git"
 });
 
-
 Package.registerBuildPlugin({
-    name:            'compile6to5',
-    use:             [],
+    name:            'compileNGScript',
     sources:         [
-        'plugin/compile-6to5.js'
+        'plugin/ng-script-compiler.js'
     ],
     npmDependencies: {
-        'babel-core':  '5.8.23',
+        'babel-core':  '5.8.25',
         'ng-annotate': '1.0.2'
     }
 });
 
 Package.onUse(function (api) {
-    api.versionsFrom('1.0.2.1');
+    api.versionsFrom('METEOR@1.2.0.1');
 
-    api.addFiles('lib/core-js-no-number.js');
-    // runtime
-    api.addFiles('lib/runtime.js');
+    api.use('isobuild:compiler-plugin@1.0.0'); // Used for compilers
 
-    // watch for changes in the config file and rebuild
-    api.add_files(['../../babel.json']);
+    // Files to load in Client only.
+    api.addFiles([
+
+        // Babel files
+        'lib/core-js-no-number.js',
+        'lib/runtime.js',
+        
+        // The custom version of browser-polyfill.js removes the check
+        // if it has already been run. I need this version to run and to 
+        // overwrite Meteor's bundled version, which is loaded in  memory.
+        // Meteor's version does NOT include the async function helpers. 
+        'lib/browser-polyfill.js',
+
+        // Need this to support es7 async functions and generators
+        //'.npm/plugin/compileNGScript/node_modules/babel-core/browser-polyfill.js',
+
+    ], 'client', { transpile: false });
 });
 
 Package.onTest(function (api) {
-    api.use(['pbastowski:angular-babel', 'tinytest']);
-    api.addFiles([
-        'tests/basic_test.es6.js'
-    ], ['client', 'server']);
 });
