@@ -57,7 +57,7 @@ See the [Babel website](http://babeljs.io/)
 
 ## Troubleshooting
 
-### Meteor refuses install the latest version of the package
+### Meteor refuses to install the latest version of the package
 If Meteor refuses to update your package to the latest Meteor 1.2 version, you may have to convince it to do so like shown below. Change the version number to whatever version that you actually want.
 
 ```bash
