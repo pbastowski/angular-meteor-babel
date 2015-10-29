@@ -4,7 +4,7 @@ This package is meant to be used with [Angular-Meteor](http://angular-meteor.com
 
 ## Install
 
-```shell
+```bash
 meteor add pbastowski:angular-babel
 ```
 
@@ -51,7 +51,19 @@ Try it and see if it works for you:
  
     meteor add pbastowski:require
      
-## More info please...
+## More info abut Babel please...
 
 See the [Babel website](http://babeljs.io/)
 
+## Troubleshooting
+
+### Meteor refuses install the latest version of the package
+If Meteor refuses to update your package to the latest Meteor 1.2 version, you may have to convince it to do so like shown below. Change the version number to whatever version that you actually want.
+
+```bash
+meteor add pbastowski:angular-babel@1.0.1
+```
+
+### What was the latest version for Meteor 1.1?
+
+The latest version of `pbastowski:angular-babel` for Meteor 1.1 is `0.1.10`
