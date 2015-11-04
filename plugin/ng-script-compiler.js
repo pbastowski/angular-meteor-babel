@@ -38,7 +38,10 @@ var processFile = function (file) {
     var lastHash = fileContentsCache[inputFile] && fileContentsCache[inputFile].hash;
     var currentHash = file.getSourceHash();
 
-    var transpile = file._resourceSlot.inputResource.fileOptions.transpile;
+    var transpile;
+    if (file._resourceSlot.inputResource.fileOptions)
+      transpile = file._resourceSlot.inputResource.fileOptions.transpile;
+
     transpile = transpile || typeof transpile === 'undefined';
     
     // Only compile files that have changed since the last run
