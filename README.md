@@ -51,9 +51,9 @@ Try it and see if it works for you:
  
     meteor add pbastowski:require
      
-## More info abut Babel please...
+## More info about Babel please...
 
-See the [Babel website](http://babeljs.io/)
+See the [Babel](http://babeljs.io/) website
 
 ## Troubleshooting
 
