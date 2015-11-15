@@ -98,6 +98,7 @@ Below is a sample `client/index.js` file. Remember that the innermost imports, t
 
 In the example below, first `client/app/app` will be imported and executed followed by `client/feature1/feature1`.
 
+
 ```javascript
 import 'client/app/app';
 import 'client/feature1/feature1';
