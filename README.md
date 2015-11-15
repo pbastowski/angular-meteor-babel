@@ -47,41 +47,88 @@ Place `.babelrc` at the root of your project to override certain default setting
 }
 ```
 
-## `import ... from` and `require`
+## Using `import ... from` 
 
-Babel does not include a `require` loader, it just compiles statements such as shown below
-
+Babel does not include a module loader, so statements such as below, will not work out of the box
+ 
 ```javascript
 import {x, y, z} from "modulename";
 ```
 
-into something like this 
+However, if your `modules` setting is `{ "modules": "system" }` then we can use `pbastowski:systemjs` to load modules compiled with Babel. For CommonJS modules, which is the default "modules" setting, we can use `pbastowski:require`.
 
-```javascript
-var x = require('modulename')['x'];
-var y = require('modulename')['y'];
-var z = require('modulename')['z'];
+### SystemJS
+
+So, you have configured Babel through `.babelrc` to output SystemJS modules, like this: 
+
+    { "modules": "system" }
+    
+Well done! Now you need to know how to use these modules in your code. 
+
+SystemJS modules are assigned a name based on their file name within your project. Below are some examples that show how a file name is converted to a module name, which you can import:
+ 
+file name | module name
+----------|------------
+client/app/app.js | client/app/app
+client/feature1/feature1.js | client/feature1/feature1
+client/feature1/lib/xxx.js | client/feature1/lib/xxx
+client/lib/angular-messages.min.js | client/lib/angular-messages.min
+
+#### Add SystemJS to your Meteor project
+
+    meteor add pbastowski:systemjs
+ 
+#### Use `System.import` to kick off your app
+
+Next, in the body section of your `index.html` file you need to import the JS file that kicks off your application. For our example that file is `client/index.js`.
+
+```html
+<head>
+    <title>My App</title>
+</head>
+<body>
+    <app>Loading...</app>
+    <script>
+        System.import('client/index');
+    </script>
+</body>
 ```
 
-So, if you actually use the `import ... from` syntax in your code then you may see errors in your dev console. To get around that, I have created a simple `require` package, which implements just enough of `require` and `module.exports` to enable you to export and import in Meteor apps. 
+Below is a sample `client/index.js` file. Remember that the innermost imports, those inside `app` and `feature1`, will be executed first. Then, the rest of the code in `index.js` will be executed in the order it is listed in the file. 
+
+In the example below, first `client/app/app` will be imported and executed followed by `client/feature1/feature1`.
+
+```javascript
+import 'client/app/app';
+import 'client/feature1/feature1';
+```
+
+### CommonJS
+
+When the module format is `common`, which is the default for this Babel plugin, you don't actually have to do anything special as long as you don't `import` or `export` in your ES6 files. Babel will compile your code and output files that will be loaded and executed just like any normal non-compiled JS files would be.  
+
+#### But I really want to import and export
+
+If you use `import ... from` or `export` syntax in your ES6 code you may see errors in your dev console complaining about a missing `require`. To get around that, I have created the package `pbastowski:require`, which implements just enough of `require` and `module.exports` to enable you to export and import in Meteor apps.
  
 Try it and see if it works for you:
  
     meteor add pbastowski:require
-     
+
+
 ## More info about Babel please...
 
 See the [Babel](http://babeljs.io/) website
 
 ## Troubleshooting
 
-### Meteor refuses to install the latest version of the package
+### Meteor refuses to install the latest version of this package
 If Meteor refuses to update your package to the latest Meteor 1.2 version, you may have to convince it to do so like shown below. Change the version number to whatever version that you actually want.
 
 ```bash
-meteor add pbastowski:angular-babel@1.0.1
+meteor add pbastowski:angular-babel@1.0.4
 ```
 
-### What was the latest version for Meteor 1.1?
+### For Meteor 1,1, what is the latest version of this package?
 
 The latest version of `pbastowski:angular-babel` for Meteor 1.1 is `0.1.10`
