@@ -1,26 +1,38 @@
 var babel = Npm.require('babel-core');
 var ngAnnotate = Npm.require('ng-annotate');
 
+var CONFIG_FILE_NAME = '.babelrc';
+
 var config = {
     // print loaded config
     'debug':   false,
-    
+
     // print active file extensions
-    'verbose': true,
-    
+    'verbose': false,
+
     // experimental ES7 support
     'stage':   0,
-    
+
     // what module system to use
     'modules': 'common',
-    
+
     // When Babel adds use-strict it kills Meteor's "global" objects
     // that is, those declared in a file with out var. So, we blacklist it.
     blacklist: ['useStrict'],
 }
 
+// Get optional custom config from .babelrc
+var customConfig = getCustomConfig(CONFIG_FILE_NAME);
+
+config = merge(config, customConfig);
+
+// Optionally pring the loaded config for debugging purposes
+if (config.debug)
+    console.log('\nBabel config:\n', JSON.stringify(config, null, 4));
+
 var processFiles = function (files) {
-    console.log('\nBabel compiling files:');
+    if (config.verbose)
+        console.log('\nBabel compiling files:');
     files.forEach(processFile);
 };
 
@@ -43,17 +55,18 @@ var processFile = function (file) {
       transpile = file._resourceSlot.inputResource.fileOptions.transpile;
 
     transpile = transpile || typeof transpile === 'undefined';
-    
+
     // Only compile files that have changed since the last run
     if ( !lastHash || lastHash !== currentHash ) {
-        
+
         if (transpile) {
-            console.log('  ' + inputFile);
+            if (config.verbose)
+                console.log('  ' + inputFile);
 
             try {
                 output = babel.transform(source, {
                     // The blacklisting of "userStrict" is required to support
-                    // Meteor's file level declarations that Meteor can export
+                    // Meteor's file level declarations, which Meteor can export
                     // from packages.
                     sourceMap: true,
                     stage:     config.stage,
@@ -73,17 +86,17 @@ var processFile = function (file) {
             var annotated = ngAnnotate(output, {
                 add: true
             });
-    
+
             if (annotated.errors) {
                 throw new Error(annotated.errors.join(': \n\n'));
             }
-            
+
             output = annotated.src;
-        
+
         } else {
             output = source;
         }
-        
+
         // Update the code cache
         fileContentsCache[inputFile] = {hash: currentHash, code: output};
 
@@ -105,3 +118,24 @@ Plugin.registerCompiler({
 }, function () {
     return {processFilesForTarget: processFiles};
 });
+
+function getCustomConfig(configFileName) {
+    var path = Plugin.path;
+    var fs = Plugin.fs;
+
+    var appdir = process.env.PWD || process.cwd();
+    var custom_config_filename = path.join(appdir, configFileName);
+    var userConfig = {};
+
+    if (fs.existsSync(custom_config_filename)) {
+        userConfig = fs.readFileSync(custom_config_filename, {encoding: 'utf8'});
+        userConfig = JSON.parse(userConfig);
+    }
+    return userConfig;
+}
+
+function merge (destination, source) {
+    for (var property in source)
+        destination[property] = source[property];
+    return destination;
+}

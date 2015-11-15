@@ -1,6 +1,8 @@
 # Babel and ng-annotate in one package
 
-This package is meant to be used with [Angular-Meteor](http://angular-meteor.com) and the corresponding `angular` package. If you are not wotking with angular-meteor then consider using Meteor's own `ecmascript` package.
+This package is meant to be used with [Angular-Meteor](http://angular-meteor.com) and the corresponding `angular` package. 
+
+If you are not working with angular-meteor then consider using Meteor's own `ecmascript` package. However, if you do need the extra bits of goodness that this package provides over and above what `ecmascript` does, then it's ok to use this package also. Even if you're not using AngularJS, it will not harm your code.
 
 ## Install
 
@@ -28,6 +30,22 @@ Here is the list of Babel transformers in this package that are not in the `ecma
 
 Please note that all es7 transformers are considered experimental, especially those at Stage 0 and 1. 
 
+
+## Custom configuration with .babelrc
+
+Place `.babelrc` at the root of your project to override certain default settings. This file is completely optional and may contain the following in JSON format. The values below are the default configuration.
+
+```json
+{
+    "verbose": false,     // true shows files being compiled
+    "debug": false,       // true displays this config file
+    "modules": "common",  // what module format Babel should use. See 
+                          // Babel documentation for "modules" option.
+    "blacklist": ['useStrict'],  // Do not change this unless you know
+                                 // very well what you are doing.
+    "stage": 0            // see Babel documentation for stage option.
+}
+```
 
 ## `import ... from` and `require`
 
