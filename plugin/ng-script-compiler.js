@@ -43,7 +43,7 @@ var processFile = function (file) {
     var inputFile = file.getPathInPackage();
     var source = file.getContentsAsString();
     var outputFile = Plugin.convertToStandardPath(file.getPathInPackage());
-    var moduleName = outputFile.replace('.js', '');
+    var moduleName = inputFile.replace(/\\/g, '/').replace('.js', '');
     var output = "";
 
     // Get file previous and current file contents hashes
@@ -95,6 +95,11 @@ var processFile = function (file) {
 
         } else {
             output = source;
+        }
+
+        // For SystemJS add a module name, so we can use SystemJS to import the file by name.
+        if (/system/i.test(config.modules)) {
+            output = output.replace("System.register([", 'System.register("' + moduleName + '",[');
         }
 
         // Update the code cache
