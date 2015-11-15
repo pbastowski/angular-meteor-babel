@@ -35,7 +35,7 @@ Please note that all es7 transformers are considered experimental, especially th
 
 Place `.babelrc` at the root of your project to override certain default settings. This file is completely optional and may contain the following in JSON format. The values below are the default configuration.
 
-```json
+```
 {
     "verbose": false,     // true shows files being compiled
     "debug": false,       // true displays this config file
