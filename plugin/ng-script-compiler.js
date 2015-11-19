@@ -1,7 +1,7 @@
 var babel = Npm.require('babel-core');
 var ngAnnotate = Npm.require('ng-annotate');
 
-var CONFIG_FILE_NAME = '.babelrc';
+var CONFIG_FILE_NAME = 'babel.json';
 
 var config = {
     // print loaded config
@@ -19,6 +19,8 @@ var config = {
     // When Babel adds use-strict it kills Meteor's "global" objects
     // that is, those declared in a file with out var. So, we blacklist it.
     blacklist: ['useStrict'],
+
+    extensions: ['js']
 }
 
 // Get optional custom config from .babelrc
@@ -117,7 +119,7 @@ var processFile = function (file) {
 };
 
 Plugin.registerCompiler({
-    extensions: ['js'],
+    extensions: config.extensions,
     filenames:  []
 
 }, function () {

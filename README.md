@@ -1,5 +1,7 @@
 # Babel and ng-annotate in one package
 
+> **Important information** if you have recently updated to v1.0.3 or higher, which introduced configuration through `.babelrc`. Please rename `.babelrc` to `babel.json`, because under certain circumstances Babel reports errors when it encounters a custom keys in `babel.rc`, such as "verbose". Thus, I have reverted to using `babel.json` from v1.0.5 onwards. Apologies for any inconvenience.
+ 
 This package is meant to be used with [Angular-Meteor](http://angular-meteor.com) and the corresponding `angular` package. 
 
 If you are not working with angular-meteor then consider using Meteor's own `ecmascript` package. However, if you do need the extra bits of goodness that this package provides over and above what `ecmascript` does, then it's ok to use this package also. Even if you're not using AngularJS, it will not harm your code.
@@ -31,9 +33,9 @@ Here is the list of Babel transformers in this package that are not in the `ecma
 Please note that all es7 transformers are considered experimental, especially those at Stage 0 and 1. 
 
 
-## Custom configuration with .babelrc
+## Custom configuration with babel.json
 
-Place `.babelrc` at the root of your project to override certain default settings. This file is completely optional and may contain the following in JSON format. The values below are the default configuration.
+Place `babel.json` at the root of your project to override certain default settings. This file is completely optional and may contain the following in JSON format. The values below are the default configuration.
 
 ```
 {
@@ -43,7 +45,8 @@ Place `.babelrc` at the root of your project to override certain default setting
                           // Babel documentation for "modules" option.
     "blacklist": ['useStrict'],  // Do not change this unless you know
                                  // very well what you are doing.
-    "stage": 0            // see Babel documentation for stage option.
+    "stage": 0,            // see Babel documentation for stage option.
+    "extensions": ["js"]   // "js" means compile all ".js" files.
 }
 ```
 
@@ -59,7 +62,7 @@ However, if your `modules` setting is `{ "modules": "system" }` then we can use 
 
 ### SystemJS
 
-So, you have configured Babel through `.babelrc` to output SystemJS modules, like this: 
+So, you have configured Babel through `babel.json` to output SystemJS modules, like this: 
 
     { "modules": "system" }
     
