@@ -60,6 +60,14 @@ var processFile = function (file) {
 
     // Only compile files that have changed since the last run
     if ( !lastHash || lastHash !== currentHash ) {
+        var modules;
+
+        // On the server always use "commonjs" modules.
+        if (file._resourceSlot.packageSourceBatch.unibuild.arch === 'os') {
+            modules= 'common';
+        } else {
+            modules = config.modules;
+        }
 
         if (transpile) {
             if (config.verbose)
@@ -73,7 +81,7 @@ var processFile = function (file) {
                     sourceMap: true,
                     stage:     config.stage,
                     filename:  file.getDisplayPath(),
-                    modules:   config.modules,
+                    modules:   modules,
                     blacklist: config.blacklist
                 }).code;
             } catch (e) {
