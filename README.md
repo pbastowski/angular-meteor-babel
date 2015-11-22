@@ -62,7 +62,9 @@ import {x, y, z} from "modulename";
 
 However, if your `modules` setting is `{ "modules": "system" }` then we can use `pbastowski:systemjs` to load modules compiled with Babel. For CommonJS modules, which is the default "modules" setting, we can use `pbastowski:require`.
 
-### SystemJS - **Meteor 1.2** or higher
+### SystemJS
+
+> **Meteor 1.2** or higher
 
 So, you have configured Babel through `babel.json` to output SystemJS modules, like this: 
 
@@ -109,7 +111,9 @@ import 'client/app/app';
 import 'client/feature1/feature1';
 ```
 
-### CommonJS - **Meteor 1.1** or higher
+### CommonJS
+
+> **Meteor 1.1** or higher
 
 When the module format is `common`, which is the default for this Babel plugin, you don't actually have to do anything special as long as you don't `import` or `export` in your ES6 files. Babel will compile your code and output files that will be loaded and executed just like any normal non-compiled JS files would be.  
 
