@@ -139,6 +139,6 @@ If Meteor refuses to update your package to the latest Meteor 1.2 version, you m
 meteor add pbastowski:angular-babel@1.0.4
 ```
 
-### For Meteor 1,1, what is the latest version of this package?
+### For Meteor 1.1, what is the latest version of this package?
 
 The latest version of `pbastowski:angular-babel` for Meteor 1.1 is `0.1.10`
