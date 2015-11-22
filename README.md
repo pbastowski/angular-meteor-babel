@@ -14,6 +14,8 @@ meteor add pbastowski:angular-babel
 
 ## What's in this package that's not in the ecmascript package?
 
+> The discussion here is for Meteor 1.2 only.
+
 Here is the list of Babel transformers in this package that are not in the `ecmascript` package:
 
 - es5.properties.mutators 
