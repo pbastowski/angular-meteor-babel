@@ -20,15 +20,50 @@ var config = {
     // that is, those declared in a file with out var. So, we blacklist it.
     blacklist: ['useStrict'],
 
-    extensions: ['js']
+    extensions: ['js'],
+
+    server: {
+        modules: 'common',
+    },
+
+    // The files section is where we can declare per-file module types.
+    // Give the full file path from the root of your app, such as
+    // 'client/index.js' or 'app.js' or 'server/main.js'
+    files: {
+        // Cordova mobile-config.js must use a self-executing module type
+        'mobile-config.js': { modules: 'common' },
+
+        // If we use SystemJS on the server side then at least one JS file
+        // on the server must use a self-executing (non SystemJS) module format.
+        // This is because SystemJS, only registers modules but does not actually
+        // execute the code in them. If all server side modules were to use the
+        // SystemJS module format then no JS files server-side would be executed.
+        // By default, we pick "server/main.js" as the file that will use the
+        // CommonJS module format. This file will include a line of JS code, for
+        // example `System.import('server/index')`, which executes the code in
+        // 'server/index.js'. This default file name can be overridden in babel.json.
+
+        // 'server/main.js': { modules: 'common' }
+    },
 }
 
-// Get optional custom config from .babelrc
+// Get optional custom config from babel.json
 var customConfig = getCustomConfig(CONFIG_FILE_NAME);
 
 config = merge(config, customConfig);
 
-// Optionally pring the loaded config for debugging purposes
+// If config.server.startupfile exists, then for SystemJS apps this specifies
+// the file that will use the CommonJS module format, to ensure it executes.
+// SystemJS wrapped modules do not execute, they only register themselves.
+if (config.server && config.server.startupfile) {
+    if (!config.files)
+        config.files = {};
+
+    if (!config.files[config.server.startupfile])
+        config.files[config.server.startupfile] = { modules: 'common' }
+}
+
+// Optionally print the loaded config for debugging purposes
 if (config.debug)
     console.log('\nBabel config:\n', JSON.stringify(config, null, 4));
 
@@ -62,13 +97,25 @@ var processFile = function (file) {
     if ( !lastHash || lastHash !== currentHash ) {
         var modules;
 
-        // On the server always use "commonjs" modules.
-        if (file._resourceSlot.packageSourceBatch.unibuild.arch === 'os') {
-            modules= 'common';
-        } else {
+        // Do we have a special module type defined for this file
+        var fileSettings = config.files[inputFile];
+
+        if (fileSettings) {
+            // Special module type for this file
+            modules = fileSettings.modules;
+        }
+
+        // The Meteor server side can have it's own module types
+        else if (file._resourceSlot.packageSourceBatch.unibuild.arch === 'os' || inputFile === 'mobile-config.js') {
+            modules = config.server.modules;
+        }
+
+        // And this is the front-end
+        else {
             modules = config.modules;
         }
 
+        // package.js can optionally request that a file not be transpiled...
         if (transpile) {
             if (config.verbose)
                 console.log('  ' + inputFile);

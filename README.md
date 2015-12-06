@@ -39,16 +39,35 @@ Place `babel.json` at the root of your project to override certain default setti
 
 ```
 {
-    "verbose": false,     // true shows files being compiled
-    "debug": false,       // true displays this config file
-    "modules": "common",  // what module format Babel should use. See 
-                          // Babel documentation for "modules" option.
+    "verbose": false,      // true shows files as they are compiled
+    "debug": false,        // true displays the config file settings
+    "modules": "common",   // What module format Babel should use. See
+                           // Babel documentation for "modules" option.
     "blacklist": ['useStrict'],  // Do not change this unless you know
                                  // very well what you are doing.
-    "stage": 0,            // see Babel documentation for stage option.
+    "stage": 0,            // If you really need to change this then
+                           // see Babel documentation stage options.
     "extensions": ["js"]   // "js" means compile all ".js" files.
+
+    "server": {
+        "modules": "common" // JS files on the server side can use a
+                            // different module system to the client side
+    },
+
+    "files": {
+        "mobile-config.js": {
+            "modules": "common"
+        },
+        "server/main.js": {
+            "modules": "common"
+        }
+    }
 }
 ```
+
+### Using different module types for some files
+
+The `modules` property allows you to specify what module type to use. The default for Meteor apps is `common`, which represents the CommonJS module format. You can also use SystemJS, see SystemJS heading, below.
 
 ## Using `import ... from` 
 
@@ -62,13 +81,28 @@ However, if your `modules` setting is `{ "modules": "system" }` then we can use 
 
 ### SystemJS
 
-So, you have configured Babel through `babel.json` to output SystemJS modules, like this: 
+SystemJS can be used on both the client and the server side. You have to configure Babel through `babel.json` to output SystemJS modules, as shown below.
 
-    { "modules": "system" }
-    
-Well done! Now you need to know how to use these modules in your code. 
+**Client side config**
 
-SystemJS modules are assigned a name based on their file name within your project. Below are some examples that show how a file name is converted to a module name, which you can import:
+Add the following to your `babel.json` file.
+
+    "modules": "system"
+
+**Server side config**
+
+    "server": {
+        "modules": "system"
+        "startupfile": "server/main.js"
+    }
+
+> There is no default for **startupfile**, because I have no way of knowing if you are already using my default for some other purpose in your project. So, make sure to specify your correct **startupfile** in babel.json.
+
+#### Usage in your code
+
+Next, you need to know how to use these modules in your code.
+
+SystemJS modules are assigned (registered) a name based on their file name within your project. Below are some examples that show how a file name is converted to a module name, which you can import:
  
 file name | module name
 ----------|------------
@@ -82,6 +116,8 @@ client/lib/angular-messages.min.js | client/lib/angular-messages.min
     meteor add pbastowski:systemjs
  
 #### Use `System.import` to kick off your app
+
+##### Client side
 
 Next, in the body section of your `index.html` file you need to import the JS file that kicks off your application. For our example that file is `client/index.js`.
 
@@ -107,6 +143,18 @@ import 'client/app/app';
 import 'client/feature1/feature1';
 ```
 
+##### Server Side
+
+On the server side at least one JS file must use a self-executing (non SystemJS) module format. This is because SystemJS only registers modules, but does not actually execute the code in them. If all server side JS files were to use the SystemJS module format then no JS files on the server-side would be executed, which is why we specify our `startupfile` in **babel.json**. This file will be executed and will kick off our app on the server side, just like **index.html** did on the client side.
+
+The `startupfile` file looks something like below. It may also have other code, but it must have at least one `System.import` statement.
+
+```javascript
+System.import('server/index')
+```
+
+Tha above line will import and execute the code in 'server/index.js'. You can of course import any file you wish.
+
 ### CommonJS
 
 When the module format is `common`, which is the default for this Babel plugin, you don't actually have to do anything special as long as you don't `import` or `export` in your ES6 files. Babel will compile your code and output files that will be loaded and executed just like any normal non-compiled JS files would be.  
@@ -127,12 +175,13 @@ See the [Babel](http://babeljs.io/) website
 ## Troubleshooting
 
 ### Meteor refuses to install the latest version of this package
+
 If Meteor refuses to update your package to the latest Meteor 1.2 version, you may have to convince it to do so like shown below. Change the version number to whatever version that you actually want.
 
 ```bash
 meteor add pbastowski:angular-babel@1.0.4
 ```
 
-### For Meteor 1,1, what is the latest version of this package?
+### For Meteor 1.1, what is the latest version of this package?
 
 The latest version of `pbastowski:angular-babel` for Meteor 1.1 is `0.1.10`
