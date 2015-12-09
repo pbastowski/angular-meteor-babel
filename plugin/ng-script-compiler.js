@@ -78,7 +78,7 @@ var processFile = function (file) {
                     // The blacklisting of "userStrict" is required to support
                     // Meteor's file level declarations, which Meteor can export
                     // from packages.
-                    sourceMap: true,
+                    sourceMap: 'inline',
                     stage:     config.stage,
                     filename:  file.getDisplayPath(),
                     modules:   modules,
