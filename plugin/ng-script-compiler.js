@@ -16,8 +16,9 @@ var config = {
     // what module system to use
     'modules': 'common',
 
-    // When Babel adds use-strict it kills Meteor's "global" objects
-    // that is, those declared in a file with out var. So, we blacklist it.
+    // When Babel adds use-strict to the top of modules, it kills Meteor's
+    // "global" objects, those declared in a file without var, which are
+    // used to export stuff from packages. So, we blacklist it.
     blacklist: ['useStrict'],
 
     extensions: ['js'],
@@ -122,10 +123,7 @@ var processFile = function (file) {
 
             try {
                 output = babel.transform(source, {
-                    // The blacklisting of "userStrict" is required to support
-                    // Meteor's file level declarations, which Meteor can export
-                    // from packages.
-                    sourceMap: true,
+                    sourceMap: 'inline',
                     stage:     config.stage,
                     filename:  file.getDisplayPath(),
                     modules:   modules,
