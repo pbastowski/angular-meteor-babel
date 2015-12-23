@@ -150,7 +150,7 @@ On the server side at least one JS file must use a self-executing (non SystemJS)
 The `startupfile` file looks something like below. It may also have other code, but it must have at least one `System.import` statement.
 
 ```javascript
-System.import('server/index')
+System.import('server/index');
 ```
 
 Tha above line will import and execute the code in 'server/index.js'. You can of course import any file you wish.

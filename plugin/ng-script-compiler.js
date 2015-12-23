@@ -81,6 +81,7 @@ var processFile = function (file) {
     var source = file.getContentsAsString();
     var outputFile = Plugin.convertToStandardPath(file.getPathInPackage());
     var moduleName = inputFile.replace(/\\/g, '/').replace('.js', '');
+    var babelOutput = {};
     var output = "";
 
     // Get file previous and current file contents hashes
@@ -121,7 +122,7 @@ var processFile = function (file) {
                 console.log('  ' + inputFile);
 
             try {
-                output = babel.transform(source, {
+                babelOutput = babel.transform(source, {
                     // The blacklisting of "userStrict" is required to support
                     // Meteor's file level declarations, which Meteor can export
                     // from packages.
@@ -130,7 +131,8 @@ var processFile = function (file) {
                     filename:  file.getDisplayPath(),
                     modules:   modules,
                     blacklist: config.blacklist
-                }).code;
+                });
+                output = babelOutput.code;
             } catch (e) {
                 console.log(e); // Show the nicely styled babel error
                 return file.error({
@@ -160,17 +162,25 @@ var processFile = function (file) {
         }
 
         // Update the code cache
-        fileContentsCache[inputFile] = {hash: currentHash, code: output};
+        fileContentsCache[inputFile] = {hash: currentHash, code: output, map: babelOutput.map};
 
     } else {
         // Pull the code from the cache
-        output = fileContentsCache[inputFile].code ;
+        output = fileContentsCache[inputFile].code;
+        babelOutput.map = fileContentsCache[inputFile].map;
     }
+
+    //if (/app\.js/i.test(inputFile))
+    //    console.log('\n\nMAP:\n', JSON.stringify(babelOutput.map));
 
     file.addJavaScript({
         data: output,
-        path: outputFile
+        path: outputFile,
+        sourceMap: JSON.stringify(babelOutput.map)
     });
+
+    //if (inputFile === 'client/app.js' || inputFile === 'client/defect/defect.js')
+    //    console.log('babelOutput.map: ', babelOutput.map);
 };
 
 Plugin.registerCompiler({

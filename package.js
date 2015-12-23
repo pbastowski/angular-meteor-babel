@@ -11,7 +11,7 @@ Package.registerBuildPlugin({
         'plugin/ng-script-compiler.js'
     ],
     npmDependencies: {
-        'babel-core':  '5.8.25',
+        'babel-core':  '5.8.32',
         'ng-annotate': '1.0.2'
     }
 });
