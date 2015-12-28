@@ -24,6 +24,8 @@ var config = {
 
     server: {
         modules: 'common',
+        startupfile: "server/main.js"  // this file will use the commonjs module
+                                       // system.
     },
 
     // The files section is where we can declare per-file module types.
@@ -206,8 +208,12 @@ function getCustomConfig(configFileName) {
     return userConfig;
 }
 
+// Perform a simple deep merge of two objects
 function merge (destination, source) {
     for (var property in source)
-        destination[property] = source[property];
+        if (Object.prototype.toString.call(source[property]) === '[object Object]')
+            merge(destination[property], source[property]);
+        else
+            destination[property] = source[property];
     return destination;
 }

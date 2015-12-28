@@ -92,11 +92,11 @@ Add the following to your `babel.json` file.
 **Server side config**
 
     "server": {
-        "modules": "system"
+        "modules": "system",
         "startupfile": "server/main.js"
     }
 
-> There is no default for **startupfile**, because I have no way of knowing if you are already using my default for some other purpose in your project. So, make sure to specify your correct **startupfile** in babel.json.
+The default for **startupfile** is `server/main.js`. However, if you are already using "main.js" for some other purpose in your project, then you can specify a different file manually.
 
 #### Usage in your code
 
@@ -184,4 +184,4 @@ meteor add pbastowski:angular-babel@1.0.4
 
 ### For Meteor 1.1, what is the latest version of this package?
 
-The latest version of `pbastowski:angular-babel` for Meteor 1.1 is `0.1.10`
+The latest version of `pbastowski:angular-babel` for Meteor 1.1 can be found on [atmospherejs.com](https://atmospherejs.com/pbastowski/angular-babel), on the History tab on the right side of the screen. Look for a version number less than `0.2.0` and that will be the latest Meteor 1.1 version. For example `0.1.10`.    
