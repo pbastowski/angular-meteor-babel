@@ -184,4 +184,4 @@ meteor add pbastowski:angular-babel@1.0.4
 
 ### For Meteor 1.1, what is the latest version of this package?
 
-The latest version of `pbastowski:angular-babel` for Meteor 1.1 can be found on [atmospherejs.com](https://atmospherejs.com/pbastowski/angular-babel), on the History tab on the right side of the screen. Look for a version number less than `0.1.x` and that will be the latest Meteor 1.1 version. For example `0.1.10`.    
+The latest version of `pbastowski:angular-babel` for Meteor 1.1 can be found on [atmospherejs.com](https://atmospherejs.com/pbastowski/angular-babel), on the History tab on the right side of the screen. Look for the highest version number that looks like `0.1.x` and that will be the latest Meteor 1.1 version. For example `0.1.10`.    
