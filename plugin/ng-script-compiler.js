@@ -211,9 +211,12 @@ function getCustomConfig(configFileName) {
 // Perform a simple deep merge of two objects
 function merge (destination, source) {
     for (var property in source)
-        if (Object.prototype.toString.call(source[property]) === '[object Object]')
+        if (Object.prototype.toString.call(source[property]) === '[object Object]') {
+            if (typeof destination[property] === 'undefined')
+                destination[property] = {};
             merge(destination[property], source[property]);
-        else
+        } else {
             destination[property] = source[property];
+        }
     return destination;
 }
