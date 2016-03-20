@@ -11,13 +11,13 @@ Package.registerBuildPlugin({
         'plugin/ng-script-compiler.js'
     ],
     npmDependencies: {
-        'babel-core':  '5.8.33',
-        'ng-annotate': '1.0.2'
+        'babel-core':  '5.8.35',
+        'ng-annotate': '1.2.1'
     }
 });
 
 Package.onUse(function (api) {
-    api.versionsFrom('METEOR@1.2.0.1');
+    api.versionsFrom('METEOR@1.3-rc.3');
 
     api.use('isobuild:compiler-plugin@1.0.0'); // Used for compilers
 
