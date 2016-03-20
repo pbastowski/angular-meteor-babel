@@ -139,7 +139,12 @@ The latest version of `pbastowski:angular-babel` for Meteor 1.1 is `0.1.10`
 
 ## Changelog
 
+### 2016-03-20 v1.3.1 for Meteor 1.3-rc.3 or higher
+
+- Changed api.use('modules') to api.imply('modules')
+
 ### 2016-03-20 v1.3.0 for Meteor 1.3-rc.3 or higher
+
 Release 1.3.0 adds compatibility with Meteor 1.3-rc.3 ro higher. Since Meteor 1.3 is still in Beta, there may be issues with using this package and your existing code. Please test thoroughly if you plan to use it in production systems.
 
 Why not update to Babel 6? Because I was expecting that Meteor's own `ecmascript` package would by now provide support for Babel 6 and for Decorators. Sadly, as of this writing it does not support Decorators, and Babel 5 still works just fine for me. If necessary, I will update this package to Babel 6.
