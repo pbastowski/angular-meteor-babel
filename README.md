@@ -133,11 +133,12 @@ If Meteor refuses to update your package to the latest Meteor 1.2 version, you m
 meteor add pbastowski:angular-babel@1.0.4
 ```
 
-### For Meteor 1,1, what is the latest version of this package?
-
-The latest version of `pbastowski:angular-babel` for Meteor 1.1 is `0.1.10`
-
 ## Changelog
+
+### 2016-03-29 v1.3.2 for Meteor 1.3
+
+- Allowing this package's version of regenerator-runtime to overwrite the one that comes with Meteor 1.3. This was already there, but got regressed somehow in one of my previous updates. This is needed to support async/await functions.
+- Updated to babel-core@5.8.38
 
 ### 2016-03-20 v1.3.1 for Meteor 1.3-rc.3 or higher
 

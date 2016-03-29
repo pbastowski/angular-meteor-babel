@@ -1,7 +1,7 @@
 Package.describe({
     name:    "pbastowski:angular-babel",
     summary: "Babel compiler and ng-annotate for Meteor 1.3",
-    version: "1.3.1",
+    version: "1.3.2",
     git:     "https://github.com/pbastowski/angular-meteor-babel.git"
 });
 
@@ -11,15 +11,15 @@ Package.registerBuildPlugin({
         'plugin/ng-script-compiler.js'
     ],
     npmDependencies: {
-        'babel-core':  '5.8.35',
+        'babel-core':  '5.8.38',
         'ng-annotate': '1.2.1'
     }
 });
 
 Package.onUse(function (api) {
-    api.versionsFrom('METEOR@1.3-rc.3');
+    api.versionsFrom('METEOR@1.3');
 
-    api.use('isobuild:compiler-plugin@1.0.0'); // Used for compilers
+    api.use('isobuild:compiler-plugin'); // Used for compilers
     api.imply('modules'); // Used for compilers
 
     // Files to load in Client only.
