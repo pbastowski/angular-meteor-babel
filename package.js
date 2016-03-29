@@ -19,7 +19,7 @@ Package.registerBuildPlugin({
 Package.onUse(function (api) {
     api.versionsFrom('METEOR@1.3');
 
-    api.use('isobuild:compiler-plugin'); // Used for compilers
+    api.use('isobuild:compiler-plugin@1.0.0'); // Used for compilers
     api.imply('modules'); // Used for compilers
 
     // Files to load in Client only.
