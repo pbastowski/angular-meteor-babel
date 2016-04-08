@@ -135,6 +135,10 @@ meteor add pbastowski:angular-babel@1.0.4
 
 ## Changelog
 
+### 2016-04-08 v1.3.3 for Meteor 1.3
+
+- Removed unused `browser-polyfill-old.js` file from the package.
+
 ### 2016-03-29 v1.3.2 for Meteor 1.3
 
 - Allowing this package's version of regenerator-runtime to overwrite the one that comes with Meteor 1.3. This was already there, but got regressed somehow in one of my previous updates. This is needed to support async/await functions.
