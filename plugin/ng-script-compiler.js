@@ -47,6 +47,7 @@ var processFile = function (file) {
     var outputFile = Plugin.convertToStandardPath(file.getPathInPackage());
     var moduleName = inputFile.replace(/\\/g, '/').replace('.js', '');
     var output = "";
+    var babelOutput = "";
 
     // Get file previous and current file contents hashes
     var lastHash = fileContentsCache[inputFile] && fileContentsCache[inputFile].hash;
@@ -74,16 +75,20 @@ var processFile = function (file) {
                 console.log('  ' + inputFile);
 
             try {
-                output = babel.transform(source, {
+                babelOutput = babel.transform(source, {
                     // The blacklisting of "userStrict" is required to support
                     // Meteor's file level declarations, which Meteor can export
                     // from packages.
-                    sourceMap: 'inline',
+                    sourceMap: true,
+                    //sourceMap: 'inline',
                     stage:     config.stage,
                     filename:  file.getDisplayPath(),
                     modules:   modules,
                     blacklist: config.blacklist
-                }).code;
+                });
+                var sourceMap = babelOutput.map;
+                output = babelOutput.code;
+
             } catch (e) {
                 console.log(e); // Show the nicely styled babel error
                 return file.error({
@@ -105,6 +110,7 @@ var processFile = function (file) {
 
         } else {
             output = source;
+            sourceMap = undefined;
         }
 
         // For SystemJS add a module name, so we can use SystemJS to import the file by name.
@@ -113,17 +119,20 @@ var processFile = function (file) {
         }
 
         // Update the code cache
-        fileContentsCache[inputFile] = {hash: currentHash, code: output};
+        fileContentsCache[inputFile] = {hash: currentHash, code: output, map: sourceMap};
 
     } else {
         // Pull the code from the cache
         output = fileContentsCache[inputFile].code ;
+        sourceMap = fileContentsCache[inputFile].map;
     }
 
     file.addJavaScript({
         data: output,
-        path: outputFile
+        path: outputFile,
+        sourceMap: sourceMap
     });
+
 };
 
 Plugin.registerCompiler({

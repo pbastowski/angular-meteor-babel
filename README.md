@@ -1,8 +1,6 @@
 # Babel and ng-annotate in one package
 
-> **Important information** if you have recently updated to v1.0.3 or higher, which introduced configuration through `.babelrc`. Please rename `.babelrc` to `babel.json`, because under certain circumstances Babel reports errors when it encounters a custom keys in `babel.rc`, such as "verbose". Thus, I have reverted to using `babel.json` from v1.0.5 onwards. Apologies for any inconvenience.
- 
-This package is meant to be used with [Angular-Meteor](http://angular-meteor.com) and the corresponding `angular` package. 
+This package is meant to be used with AngularJS and Meteor.  For a great implementation of AngularJS on the Meteor platform please see [Angular-Meteor](http://angular-meteor.com) and the corresponding `angular` package.
 
 If you are not working with angular-meteor then consider using Meteor's own `ecmascript` package. However, if you do need the extra bits of goodness that this package provides over and above what `ecmascript` does, then it's ok to use this package also. Even if you're not using AngularJS, it will not harm your code.
 
@@ -50,7 +48,15 @@ Place `babel.json` at the root of your project to override certain default setti
 }
 ```
 
-## Using `import ... from` 
+> If you are using Meteor 1.3 then please ignore the Meteor 1.2 and SYstemJS sections, below. Instead, read Meteor 1.3 documentation about "modules".
+
+# Meteor 1.2 and below
+
+## Using `import ... from`
+
+> Meteor 1.2 only
+
+If you are using Meteor 1.3 then please ignore this section and any notes about SystemJS further below. Instead, read Meteor 1.3 docs about modules.
 
 Babel does not include a module loader, so statements such as below, will not work out of the box
  
@@ -61,6 +67,8 @@ import {x, y, z} from "modulename";
 However, if your `modules` setting is `{ "modules": "system" }` then we can use `pbastowski:systemjs` to load modules compiled with Babel. For CommonJS modules, which is the default "modules" setting, we can use `pbastowski:require`.
 
 ### SystemJS
+
+> Meteor 1.2 only
 
 So, you have configured Babel through `babel.json` to output SystemJS modules, like this: 
 
@@ -107,24 +115,24 @@ import 'client/app/app';
 import 'client/feature1/feature1';
 ```
 
-### CommonJS
+### CommonJS, the Meteor 1.3 default for modules
 
-When the module format is `common`, which is the default for this Babel plugin, you don't actually have to do anything special as long as you don't `import` or `export` in your ES6 files. Babel will compile your code and output files that will be loaded and executed just like any normal non-compiled JS files would be.  
+When the module format is `common`, which is the default for this Babel plugin, you don't actually have to do anything special as long as you don't `import` or `export` in your ES6 files. Babel will compile your code and output files that will be loaded and executed just like any normal non-compiled JS files would be.
 
 #### But I really want to import and export
 
-If you use `import ... from` or `export` syntax in your ES6 code you may see errors in your dev console complaining about a missing `require`. To get around that, I have created the package `pbastowski:require`, which implements just enough of `require` and `module.exports` to enable you to export and import in Meteor apps.
+With Meteor 1.2, if you use `import ... from` or `export` syntax in your ES6 code you may see errors in your dev console complaining about a missing `require`. To get around that, I have created the package `pbastowski:require`, which implements just enough of `require` and `module.exports` to enable you to export and import in Meteor apps.
  
 Try it and see if it works for you:
  
     meteor add pbastowski:require
 
 
-## More info about Babel please...
+# More info about Babel please...
 
 See the [Babel](http://babeljs.io/) website
 
-## Troubleshooting
+# Troubleshooting
 
 ### Meteor refuses to install the latest version of this package
 If Meteor refuses to update your package to the latest Meteor 1.2 version, you may have to convince it to do so like shown below. Change the version number to whatever version that you actually want.
@@ -133,7 +141,11 @@ If Meteor refuses to update your package to the latest Meteor 1.2 version, you m
 meteor add pbastowski:angular-babel@1.0.4
 ```
 
-## Changelog
+# Changelog
+
+### 2016-04-15 v1.3.4 for Meteor 1.3
+
+- Fixed the problem with source maps not working.
 
 ### 2016-04-08 v1.3.3 for Meteor 1.3
 
