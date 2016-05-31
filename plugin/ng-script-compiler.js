@@ -1,5 +1,6 @@
 var babel = Npm.require('babel-core');
 var ngAnnotate = Npm.require('ng-annotate');
+var fs = Npm.require('fs');
 
 var CONFIG_FILE_NAME = 'babel.json';
 
@@ -127,6 +128,8 @@ var processFile = function (file) {
         sourceMap = fileContentsCache[inputFile].map;
     }
 
+    console.log('sourceMap: ', sourceMap);
+
     file.addJavaScript({
         data: output,
         path: outputFile,
@@ -145,7 +148,7 @@ Plugin.registerCompiler({
 
 function getCustomConfig(configFileName) {
     var path = Plugin.path;
-    var fs = Plugin.fs;
+    // var fs = Plugin.fs;
 
     var appdir = process.env.PWD || process.cwd();
     var custom_config_filename = path.join(appdir, configFileName);
