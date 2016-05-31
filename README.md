@@ -143,6 +143,10 @@ meteor add pbastowski:angular-babel@1.0.4
 
 # Changelog
 
+### 2016-05-31 v1.3.6 for Meteor 1.3.3-beta.1
+
+- Remove the unwanted "console.log"
+
 ### 2016-05-31 v1.3.5 for Meteor 1.3.3-beta.1
 
 - Fixes https://github.com/pbastowski/angular-meteor-babel/issues/25

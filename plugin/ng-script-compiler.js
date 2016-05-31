@@ -128,8 +128,6 @@ var processFile = function (file) {
         sourceMap = fileContentsCache[inputFile].map;
     }
 
-    console.log('sourceMap: ', sourceMap);
-
     file.addJavaScript({
         data: output,
         path: outputFile,
