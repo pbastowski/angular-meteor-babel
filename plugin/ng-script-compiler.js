@@ -94,8 +94,8 @@ var processFile = function (file) {
                 console.log(e); // Show the nicely styled babel error
                 return file.error({
                     message: 'Babel transform error',
-                    line:    e.loc.line,
-                    column:  e.loc.column
+                    line:    (e.loc || {}).line,
+                    column:  (e.loc || {}).column
                 });
             }
 
