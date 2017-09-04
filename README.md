@@ -1,3 +1,9 @@
+# WARNING: this package is deprecated and no longer supported
+
+I suggest users migrate to the native `ecmascript` package. Here is how one user accomplished this recently:
+
+https://github.com/pbastowski/angular-meteor-babel/issues/33
+
 # Babel and ng-annotate in one package
 
 > **Important information** if you have recently updated to v1.0.3 or higher, which introduced configuration through `.babelrc`. Please rename `.babelrc` to `babel.json`, because under certain circumstances Babel reports errors when it encounters a custom keys in `babel.rc`, such as "verbose". Thus, I have reverted to using `babel.json` from v1.0.5 onwards. Apologies for any inconvenience.
